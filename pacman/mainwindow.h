@@ -53,11 +53,9 @@ private:
     smallpoint *Smallpoint[29][26];
     bigpoint *Bigpoint[4];
     pacman *Pacman;
-    ghost *ghost1;
-    ghost *ghost2;
-    ghost *ghost3;
-    ghost *ghost4;
+    ghost *ghosts[4];
     cherry *Cherry;
+
     QTimer *timer1; //for move
     QTimer *timer2; //for changePics
     QTimer *timer3; //for bigpoint
@@ -68,23 +66,18 @@ private:
     QTimer *timer8; //for point, pause time
     QTimer *timer9; //for slow move
     QTimer *timer10; //for cherry setVisible true
-    QTimer *timer11; //for cherry setVisible false;
     int smallpointNum;
     int bigpointNum;
+    
     // mode: 0 := not bonus time, 1 := bonus time, 2 := bonus time2
-    int modeRed;
-    int modePink;
-    int modeCyan;
-    int modeOrange;
+    int modes[4];
     QLabel *point;
     QQueue<int> q;
     int addpoint;
     bool pause;
     bool isBonus2;
-    bool slowRed;
-    bool slowPink;
-    bool slowCyan;
-    bool slowOrange;
+
+    bool slows[4];
 };
 
 #endif // MAINWINDOW_H

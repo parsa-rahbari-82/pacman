@@ -45,14 +45,11 @@ MainWindow::MainWindow(QWidget *parent) :
     scene->addItem(Pacman);
 
     // add ghosts to scene
-    ghost1 = new red();
-    scene->addItem(ghost1);
-    ghost2 = new pink();
-    scene->addItem(ghost2);
-    ghost3 = new cyan();
-    scene->addItem(ghost3);
-    ghost4 = new orange();
-    scene->addItem(ghost4);
+    ghosts[0] = new red();
+    ghosts[1] = new pink();
+    ghosts[2] = new cyan();
+    ghosts[3] = new orange();
+    for (int i = 0; i < 4; i++) scene->addItem(ghosts[i]);
 
     point = new QLabel(this);
     point->setGeometry(0, 0, 49, 17);
@@ -68,47 +65,50 @@ MainWindow::MainWindow(QWidget *parent) :
     srandom(time(NULL));
     timer1 = new QTimer(this);
     connect(timer1, SIGNAL(timeout()), this, SLOT(allMove()));
-    timer1->start(13);
+    timer1->start(18);
+    
     timer2 = new QTimer(this);
     connect(timer2, SIGNAL(timeout()), this, SLOT(allChangePics()));
     timer2->start(100);
+    
     timer3 = new QTimer(this);
     connect(timer3, SIGNAL(timeout()), this, SLOT(bigpointChangePics()));
     timer3->start(200);
-    modeRed = modePink = modeCyan = modeOrange = 0;
+    
+    for (int i = 0; i < 4; i++) modes[i] = 0;
     addpoint = 200;
     pause = false;
     isBonus2 = false;
+    
     timer8 = new QTimer(this);
     timer8->setSingleShot(true);
     connect(timer8, SIGNAL(timeout()), this, SLOT(pauseTime()));
     timer8->start(2000);
+    
     timer9 = new QTimer(this);
     connect(timer9, SIGNAL(timeout()), this, SLOT(slowMove()));
-    timer9->start(26);
+    timer9->start(2);
+    
     timer10 = new QTimer(this);
+    timer10->setSingleShot(true);
     connect(timer10, SIGNAL(timeout()), this, SLOT(cherrySetVisibleTrue()));
     timer10->start(60000);
+    
     pause = true;
-    slowRed = false;
-    slowPink = slowCyan = slowOrange = true;
+    slows[0] = false;
+    slows[1] = slows[2] = slows[3] = true;
 }
 
 void MainWindow::allMove(){
     if(!pause){
         Pacman->move();
-        if(modeRed == 0 && !slowRed)
-            ghost1->move();
-        if(modePink == 0 && !slowPink)
-            ghost2->move();
-        if(modeCyan == 0 && !slowCyan)
-            ghost3->move();
-        if(modeOrange == 0 && !slowOrange)
-            ghost4->move();
+        for (int i = 0; i < 4; i++)
+            (ghosts[i])->move();
+
         for(int i = 0; i < 29; i++){
             for(int j = 0; j < 26; j++){
-                bool isCollided = Pacman->collidesWithItem(Smallpoint[i][j]);
-                if(isCollided){
+                bool isCollideditm = Pacman->collidesWithItem(Smallpoint[i][j]);
+                if(isCollideditm){
                     Smallpoint[i][j]->collide();
                     ui->lcdNumber->display(ui->lcdNumber->value() + 10);
                     smallpointNum++;
@@ -130,7 +130,8 @@ void MainWindow::allMove(){
                 }
                 Bigpoint[i]->collide();
                 ui->lcdNumber->display(ui->lcdNumber->value() + 50);
-                modeRed = modePink = modeCyan = modeOrange = 1;
+
+                for (int i = 0; i < 4; i++) modes[i] = 1;
                 timer4[i] = new QTimer(this);
                 timer4[i]->setSingleShot(true);
                 connect(timer4[i], SIGNAL(timeout()), this, SLOT(bonusTime()));
@@ -149,80 +150,40 @@ void MainWindow::allMove(){
                 bigpointNum++;
             }
         }
-        bool isCollided1 = Pacman->collidesWithItem(ghost1);
-        bool isCollided2 = Pacman->collidesWithItem(ghost2);
-        bool isCollided3 = Pacman->collidesWithItem(ghost3);
-        bool isCollided4 = Pacman->collidesWithItem(ghost4);
-        if((isCollided1 && !modeRed) || (isCollided2 && !modePink) || (isCollided3 && !modeCyan) || (isCollided4 && !modeOrange)){
+
+        // colieded list
+        bool isCollided[4];
+        for (int i = 0; i < 4; i++)
+            isCollided[i] = Pacman->collidesWithItem(ghosts[i]);
+
+        if((isCollided[0] && !modes[0]) || (isCollided[1] && !modes[1])
+        || (isCollided[2] && !modes[2]) || (isCollided[3] && !modes[3])){
             pause = true;
             ui->Lose->setVisible(true);
         }
-        if(isCollided1 && modeRed){
-            modeRed = 0;
-            point->setText(QString::number(addpoint));
-            point->setGeometry(ghost1->x(), ghost1->y() + 30, 49, 17);
-            point->setVisible(true);
-            ui->lcdNumber->display(ui->lcdNumber->value() + addpoint);
-            pause = true;
-            timer8 = new QTimer(this);
-            timer8->setSingleShot(true);
-            connect(timer8, SIGNAL(timeout()), this, SLOT(getPointTime()));
-            timer8->start(1000);
-            ghost1->setPos(376, 342);
-            ghost1->setDirection(0);
-            slowRed = true;
-            addpoint *= 2;
+        
+
+        for (int i = 0; i < 4; i++) {
+            if(isCollided[i] && modes[i]){
+                modes[i] = 0;
+                point->setText(QString::number(addpoint));
+                point->setGeometry((ghosts[i])->x(), (ghosts[i])->y() + 30, 49, 17);
+                point->setVisible(true);
+                ui->lcdNumber->display(ui->lcdNumber->value() + addpoint);
+                pause = true;
+                timer8 = new QTimer(this);
+                timer8->setSingleShot(true);
+                connect(timer8, SIGNAL(timeout()), this, SLOT(getPointTime()));
+                timer8->start(1000);
+                (ghosts[i])->setPos(376, 342);
+                ghosts[i]->setDirection(0);
+                slows[i] = true;
+                addpoint *= 2;
+            }
         }
-        if(isCollided2 && modePink){
-            modePink = 0;
-            point->setText(QString::number(addpoint));
-            point->setGeometry(ghost2->x(), ghost2->y() + 30, 49, 17);
-            point->setVisible(true);
-            ui->lcdNumber->display(ui->lcdNumber->value() + addpoint);
-            pause = true;
-            timer8 = new QTimer(this);
-            timer8->setSingleShot(true);
-            connect(timer8, SIGNAL(timeout()), this, SLOT(getPointTime()));
-            timer8->start(1000);
-            ghost2->setPos(376, 342);
-            ghost2->setDirection(0);
-            slowPink = true;
-            addpoint *= 2;
-        }
-        if(isCollided3 && modeCyan){
-            modeCyan = 0;
-            point->setText(QString::number(addpoint));
-            point->setGeometry(ghost3->x(), ghost3->y() + 30, 49, 17);
-            point->setVisible(true);
-            ui->lcdNumber->display(ui->lcdNumber->value() + addpoint);
-            pause = true;
-            timer8 = new QTimer(this);
-            timer8->setSingleShot(true);
-            connect(timer8, SIGNAL(timeout()), this, SLOT(getPointTime()));
-            timer8->start(1000);
-            ghost3->setPos(376, 342);
-            ghost3->setDirection(0);
-            slowCyan = true;
-            addpoint *= 2;
-        }
-        if(isCollided4 && modeOrange){
-            modeOrange = 0;
-            point->setText(QString::number(addpoint));
-            point->setGeometry(ghost4->x(), ghost4->y() + 30, 49, 17);
-            point->setVisible(true);
-            ui->lcdNumber->display(ui->lcdNumber->value() + addpoint);
-            pause = true;
-            timer8 = new QTimer(this);
-            timer8->setSingleShot(true);
-            connect(timer8, SIGNAL(timeout()), this, SLOT(getPointTime()));
-            timer8->start(1000);
-            ghost4->setPos(376, 342);
-            ghost4->setDirection(0);
-            slowOrange = true;
-            addpoint *= 2;
-        }
-        bool isCollided = Pacman->collidesWithItem(Cherry);
-        if(isCollided){
+
+        bool isCollidedCherry = Pacman->collidesWithItem(Cherry);
+        if(isCollidedCherry){
             Cherry->changePics(1);
             ui->lcdNumber->display(ui->lcdNumber->value() + 100);
         }
@@ -236,41 +197,17 @@ void MainWindow::allMove(){
 void MainWindow::allChangePics(){
     if(!pause){
         Pacman->changePics();
-        if(modeRed == 0){
-            ghost1->changePics();
-        }
-        else if(modeRed == 1){
-            ghost1->changePics2();
-        }
-        else if(modeRed == 2){
-            ghost1->changePics3();
-        }
-        if(modePink == 0){
-            ghost2->changePics();
-        }
-        else if(modePink == 1){
-            ghost2->changePics2();
-        }
-        else if(modePink == 2){
-            ghost2->changePics3();
-        }
-        if(modeCyan == 0){
-            ghost3->changePics();
-        }
-        else if(modeCyan == 1){
-            ghost3->changePics2();
-        }
-        else if(modeCyan == 2){
-            ghost3->changePics3();
-        }
-        if(modeOrange == 0){
-            ghost4->changePics();
-        }
-        else if(modeOrange == 1){
-            ghost4->changePics2();
-        }
-        else if(modeOrange == 2){
-            ghost4->changePics3();
+
+        for (int i = 0; i < 4; i++){
+            if(modes[i] == 0){
+                (ghosts[i])->changePics();
+            }
+            else if(modes[i] == 1){
+                (ghosts[i])->changePics2();
+            }
+            else if(modes[i] == 2){
+                (ghosts[i])->changePics3();
+            }
         }
     }
 }
@@ -287,7 +224,7 @@ void MainWindow::bigpointChangePics(){
 void MainWindow::bonusTime(){
     int i = q.front();
     q.pop_front();
-    modeRed = modePink = modeCyan = modeOrange = 0;
+    for (int i = 0; i < 4; i++) modes[i] = 0;
     isBonus2 = false;
     addpoint = 200;
     delete timer4[i];
@@ -303,29 +240,13 @@ void MainWindow::bonusTime2(){
 void MainWindow::flicker(){
     if(!pause){
         if(isBonus2){
-            if(modeRed == 1){
-                modeRed = 2;
-            }
-            else if(modeRed == 2){
-                modeRed = 1;
-            }
-            if(modePink == 1){
-                modePink = 2;
-            }
-            else if(modePink == 2){
-                modePink = 1;
-            }
-            if(modeCyan == 1){
-                modeCyan = 2;
-            }
-            else if(modeCyan == 2){
-                modeCyan = 1;
-            }
-            if(modeOrange == 1){
-                modeOrange = 2;
-            }
-            else if(modeOrange == 2){
-                modeOrange = 1;
+            for (int i = 0; i < 4; i++){
+                if(modes[i] == 1){
+                    modes[i] = 2;
+                }
+                else if(modes[i] == 2){
+                    modes[i] = 1;
+                }
             }
         }
     }
@@ -333,15 +254,11 @@ void MainWindow::flicker(){
 
 void MainWindow::ghostmove2(){
     if(!pause){
-        if((modeRed == 1 || modeRed == 2) && !slowRed)
-            ghost1->move();
-        if((modePink == 1 || modePink == 2) && !slowPink)
-            ghost2->move();
-        if((modeCyan == 1 || modeCyan == 2) && !slowCyan)
-            ghost3->move();
-        if((modeOrange == 1 || modeOrange == 2) && !slowOrange)
-            ghost4->move();
-    }
+        for (int i = 0; i < 4; i++){
+            if((modes[i] == 1 || modes[i] == 2) && !slows[i])
+                (ghosts[i])->move();
+        }
+    }  
 }
 
 void MainWindow::getPointTime(){
@@ -358,40 +275,31 @@ void MainWindow::pauseTime(){
 
 void MainWindow::slowMove(){
     if(!pause){
-        if(slowRed)
-            ghost1->move();
-        if(slowPink)
-            ghost2->move();
-        if(slowCyan)
-            ghost3->move();
-        if(slowOrange)
-            ghost4->move();
+        for (int i = 0; i < 4; i++){
+            if(slows[i])
+                (ghosts[i])->move();
+        }
     }
-    if(ghost1->x() == 376.0 && ghost1->y() == 272.0){
-        slowRed = false;
-    }
-    if(ghost2->x() == 376.0 && ghost2->y() == 272.0){
-        slowPink = false;
-    }
-    if(ghost3->x() == 376.0 && ghost3->y() == 272.0){
-        slowCyan = false;
-    }
-    if(ghost4->x() == 376.0 && ghost4->y() == 272.0){
-        slowOrange = false;
+
+    for (int i = 0; i < 4; i++){
+        if((ghosts[i])->x() == 376.0 && (ghosts[i])->y() == 272.0){
+            slows[i] = false;
+        }
     }
 }
 
 void MainWindow::cherrySetVisibleTrue(){
     Cherry->changePics(0);
-    timer11 = new QTimer(this);
-    timer11->setSingleShot(true);
-    connect(timer11, SIGNAL(timeout()), this, SLOT(cherrySetVisibleFalse()));
-    timer11->start(10000);
+
+    connect(timer10, SIGNAL(timeout()), this, SLOT(cherrySetVisibleFalse()));
+    timer10->start(10000);
 }
 
 void MainWindow::cherrySetVisibleFalse(){
     Cherry->changePics(1);
-    delete timer11;
+
+    connect(timer10, SIGNAL(timeout()), this, SLOT(cherrySetVisibleTrue()));
+    timer10->start(60000);
 }
 
 MainWindow::~MainWindow()
