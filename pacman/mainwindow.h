@@ -50,10 +50,13 @@ public slots:
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
+    
     smallpoint *Smallpoint[29][26];
     bigpoint *Bigpoint[4];
+  
     pacman *Pacman;
     ghost *ghosts[4];
+    
     cherry *Cherry;
 
     QTimer *timer1; //for move
@@ -71,6 +74,7 @@ private:
     
     // mode: 0 := not bonus time, 1 := bonus time, 2 := bonus time2
     int modes[4];
+    
     QLabel *point;
     QQueue<int> q;
     int addpoint;

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -23,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     smallpointNum = 0;
 
     // add big points to scene
-    float poses[4][2] = {{18, 60.2}, {730.5, 60.2}, {18, 582.2}, {730.5, 582.2}}
+    float poses[4][2] = {{18, 60.2}, {730.5, 60.2}, {18, 582.2}, {730.5, 582.2}};
     for (int i = 0; i < 4; i++) {
         Bigpoint[i] = new bigpoint();
         Bigpoint[i]->setPos(poses[i][0], poses[i][1]);
@@ -59,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent) :
     Cherry = new cherry();
     scene->addItem(Cherry);
 
-    srandom(time(NULL));
+    srandom(time(NULL)); // seed
     timer1 = new QTimer(this);
     connect(timer1, SIGNAL(timeout()), this, SLOT(allMove()));
     timer1->start(18);
@@ -84,7 +85,7 @@ MainWindow::MainWindow(QWidget *parent) :
     
     timer9 = new QTimer(this);
     connect(timer9, SIGNAL(timeout()), this, SLOT(slowMove()));
-    timer9->start(2);
+    timer9->start(32);
     
     timer10 = new QTimer(this);
     timer10->setSingleShot(true);
@@ -92,7 +93,7 @@ MainWindow::MainWindow(QWidget *parent) :
     timer10->start(60000);
     
     pause = true;
-    slows[0] = false;
+    slows[0] = true;
     slows[1] = slows[2] = slows[3] = true;
 }
 
@@ -101,17 +102,20 @@ void MainWindow::allMove(){
         Pacman->move();
         for (int i = 0; i < 4; i++)
             (ghosts[i])->move();
-
+            
+        // collide small points
         for(int i = 0; i < 29; i++){
             for(int j = 0; j < 26; j++){
-                bool isCollideditm = Pacman->collidesWithItem(Smallpoint[i][j]);
-                if(isCollideditm){
+                bool isCollided = Pacman->collidesWithItem(Smallpoint[i][j]);
+                if(isCollided){
                     Smallpoint[i][j]->collide();
                     ui->lcdNumber->display(ui->lcdNumber->value() + 10);
                     smallpointNum++;
                 }
             }
         }
+
+        // collide big points
         for(int i = 0; i < 4; i++){
             bool isCollided = Pacman->collidesWithItem(Bigpoint[i]);
             if(isCollided){
@@ -125,30 +129,36 @@ void MainWindow::allMove(){
                     addpoint = 200;
                     isBonus2 = false;
                 }
+
                 Bigpoint[i]->collide();
                 ui->lcdNumber->display(ui->lcdNumber->value() + 50);
 
                 for (int i = 0; i < 4; i++) modes[i] = 1;
+
                 timer4[i] = new QTimer(this);
                 timer4[i]->setSingleShot(true);
                 connect(timer4[i], SIGNAL(timeout()), this, SLOT(bonusTime()));
+                timer4[i]->start(9000);
+
                 timer5[i] = new QTimer(this);
                 timer5[i]->setSingleShot(true);
                 connect(timer5[i], SIGNAL(timeout()), this, SLOT(bonusTime2()));
+                timer5[i]->start(6500);
+
                 timer6[i] = new QTimer(this);
                 connect(timer6[i], SIGNAL(timeout()), this, SLOT(flicker()));
+                timer6[i]->start(200);
+
                 timer7[i] = new QTimer(this);
                 connect(timer7[i], SIGNAL(timeout()), this, SLOT(ghostmove2()));
-                timer4[i]->start(9000);
-                timer5[i]->start(6500);
-                timer6[i]->start(200);
-                timer7[i]->start(20);
+                timer7[i]->start(32);
+
                 q.push_back(i);
                 bigpointNum++;
             }
         }
 
-        // colieded list
+        // collided list
         bool isCollided[4];
         for (int i = 0; i < 4; i++)
             isCollided[i] = Pacman->collidesWithItem(ghosts[i]);
@@ -211,15 +221,14 @@ void MainWindow::allChangePics(){
 
 void MainWindow::bigpointChangePics(){
     if(!pause){
-        Bigpoint[0]->changePics();
-        Bigpoint[1]->changePics();
-        Bigpoint[2]->changePics();
-        Bigpoint[3]->changePics();
+        for (int i = 0; i < 4; i++)
+            Bigpoint[i]->changePics();
     }
 }
 
 void MainWindow::bonusTime(){
     int i = q.front();
+    std::cout << i << '\n';
     q.pop_front();
     for (int i = 0; i < 4; i++) modes[i] = 0;
     isBonus2 = false;
