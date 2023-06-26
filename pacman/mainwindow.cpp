@@ -23,18 +23,13 @@ MainWindow::MainWindow(QWidget *parent) :
     smallpointNum = 0;
 
     // add big points to scene
-    Bigpoint[0] = new bigpoint();
-    Bigpoint[0]->setPos(18, 60.2);
-    scene->addItem(Bigpoint[0]);
-    Bigpoint[1] = new bigpoint();
-    Bigpoint[1]->setPos(730.5, 60.2);
-    scene->addItem(Bigpoint[1]);
-    Bigpoint[2] = new bigpoint();
-    Bigpoint[2]->setPos(18, 582.2);
-    scene->addItem(Bigpoint[2]);
-    Bigpoint[3] = new bigpoint();
-    Bigpoint[3]->setPos(730.5, 582.2);
-    scene->addItem(Bigpoint[3]);
+    float poses[4][2] = {{18, 60.2}, {730.5, 60.2}, {18, 582.2}, {730.5, 582.2}}
+    for (int i = 0; i < 4; i++) {
+        Bigpoint[i] = new bigpoint();
+        Bigpoint[i]->setPos(poses[i][0], poses[i][1]);
+        
+        scene->addItem(Bigpoint[i]);
+    }
     bigpointNum = 0;
 
     // add pacman to scene
@@ -50,7 +45,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ghosts[2] = new cyan();
     ghosts[3] = new orange();
     for (int i = 0; i < 4; i++) scene->addItem(ghosts[i]);
-
+    
+    // point lable
     point = new QLabel(this);
     point->setGeometry(0, 0, 49, 17);
     point->setFont(QFont("Ubuntu Regular", 14));
@@ -59,6 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
     point->setPalette(pa);
     point->setVisible(false);
 
+    // cherry
     Cherry = new cherry();
     scene->addItem(Cherry);
 

@@ -65,7 +65,7 @@ private:
     QTimer *timer7[4]; //for move in bonus time
     QTimer *timer8; //for point, pause time
     QTimer *timer9; //for slow move
-    QTimer *timer10; //for cherry setVisible true
+    QTimer *timer10; //for cherry setVisible
     int smallpointNum;
     int bigpointNum;
     
