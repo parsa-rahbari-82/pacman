@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -52,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     point->setGeometry(0, 0, 49, 17);
     point->setFont(QFont("Ubuntu Regular", 14));
     QPalette pa;
-    pa.setColor(QPalette::WindowText, Qt::darkGreen);
+    pa.setColor(QPalette::WindowText, Qt::red);
     point->setPalette(pa);
     point->setVisible(false);
 
@@ -83,7 +82,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer8, SIGNAL(timeout()), this, SLOT(pauseTime()));
     timer8->start(2000);
     
-    timer9 = new QTimer(this);
+    timer9 = new QTimer(this); /* ####################### */
     connect(timer9, SIGNAL(timeout()), this, SLOT(slowMove()));
     timer9->start(32);
     
@@ -93,8 +92,7 @@ MainWindow::MainWindow(QWidget *parent) :
     timer10->start(60000);
     
     pause = true;
-    slows[0] = true;
-    slows[1] = slows[2] = slows[3] = true;
+    for (int i = 0; i < 4; i++) slows[i] = true;
 }
 
 void MainWindow::allMove(){
@@ -119,7 +117,7 @@ void MainWindow::allMove(){
         for(int i = 0; i < 4; i++){
             bool isCollided = Pacman->collidesWithItem(Bigpoint[i]);
             if(isCollided){
-                if(!q.empty()){
+                if(!q.empty()){ /* ######################## */
                     int temp = q.front();
                     q.pop_front();
                     delete timer4[temp];
@@ -172,17 +170,20 @@ void MainWindow::allMove(){
 
         for (int i = 0; i < 4; i++) {
             if(isCollided[i] && modes[i]){
-                modes[i] = 0;
+                modes[i] = 0; // exit bonus
+
                 point->setText(QString::number(addpoint));
                 point->setGeometry((ghosts[i])->x(), (ghosts[i])->y() + 30, 49, 17);
                 point->setVisible(true);
                 ui->lcdNumber->display(ui->lcdNumber->value() + addpoint);
                 pause = true;
+                // pause for 1 sec
                 timer8 = new QTimer(this);
                 timer8->setSingleShot(true);
                 connect(timer8, SIGNAL(timeout()), this, SLOT(getPointTime()));
                 timer8->start(1000);
-                (ghosts[i])->setPos(376, 342);
+
+                (ghosts[i])->setPos(376, 342); // set to home
                 ghosts[i]->setDirection(0);
                 slows[i] = true;
                 addpoint *= 2;
@@ -227,8 +228,7 @@ void MainWindow::bigpointChangePics(){
 }
 
 void MainWindow::bonusTime(){
-    int i = q.front();
-    std::cout << i << '\n';
+    int i = q.front(); /* ########## */
     q.pop_front();
     for (int i = 0; i < 4; i++) modes[i] = 0;
     isBonus2 = false;
