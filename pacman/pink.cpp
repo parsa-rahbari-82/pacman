@@ -1,6 +1,6 @@
 #include "pink.h"
 
-pink::pink(){
+Pink::Pink(){
     // load pics
     pics[0].push_back(QPixmap(":/img/img/pinku1"));
     pics[0].push_back(QPixmap(":/img/img/pinku2"));
@@ -20,7 +20,7 @@ pink::pink(){
     picsArg = 0;
 }
 
-void pink::move(){
+void Pink::move(){
     direction = changeDirection();
     if(direction == 0){
         setPos(x(), y() - 2);

@@ -1,7 +1,7 @@
 #include "smallpoint.h"
 #include "mainwindow.h"
 
-smallpoint::smallpoint(double X, double Y, int i, int j){
+SmallPoint::SmallPoint(double X, double Y, int i, int j){
     // load pics
     pics.push_back(QPixmap(":/img/img/smallpoint"));
     pics.push_back(QPixmap(":/img/img/transparent"));
@@ -14,6 +14,6 @@ smallpoint::smallpoint(double X, double Y, int i, int j){
     setPos(X, Y);
 }
 
-void smallpoint::collide(){
+void SmallPoint::collide(){
     setPixmap(pics[1].scaled(50, 50, Qt::KeepAspectRatio));
 }

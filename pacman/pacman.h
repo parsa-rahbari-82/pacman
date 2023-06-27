@@ -8,10 +8,10 @@
 #include <QTimer>
 
 
-class pacman : public QGraphicsPixmapItem
+class Pacman : public QGraphicsPixmapItem
 {
 public:
-    pacman();
+    Pacman();
     void keyPressEvent(QKeyEvent *event);
     void move();
     void changePics();

@@ -7,10 +7,10 @@
 #include <QTimer>
 #include <cstdlib>
 
-class ghost : public QGraphicsPixmapItem
+class Ghost : public QGraphicsPixmapItem
 {
 public:
-    ghost();
+    Ghost();
     virtual void move();
     int changeDirection();
     void changePics();

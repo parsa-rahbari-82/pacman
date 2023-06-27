@@ -2,15 +2,15 @@
 #include "mainwindow.h"
 
 
-ghost::ghost(){
+Ghost::Ghost(){
 
 }
 
-void ghost::move(){
+void Ghost::move(){
 
 }
 
-int ghost::changeDirection(){
+int Ghost::changeDirection(){
     int i = 0, j = 0, tempDirect;
     bool checkX = false, checkY = false;
     float blocksX[] = {10.0, 74.0, 170.0, 252.0, 334.0, 418.0, 500.0, 584.0, 678.0, 740.0};
@@ -60,23 +60,23 @@ int ghost::changeDirection(){
     }
 }
 
-void ghost::changePics(){
+void Ghost::changePics(){
     picsArg = picsArg * -1 + 1;
     if(direction < 4 )
     setPixmap(pics[direction][picsArg].scaled(50, 50, Qt::KeepAspectRatio));
 }
 
-void ghost::changePics2(){
+void Ghost::changePics2(){
     picsArg = picsArg * -1 + 1;
     setPixmap(pics[4][picsArg].scaled(50, 50, Qt::KeepAspectRatio));
 }
 
-void ghost::changePics3(){
+void Ghost::changePics3(){
     picsArg = picsArg * -1 + 1;
     setPixmap(pics[5][picsArg].scaled(50, 50, Qt::KeepAspectRatio));
 }
 
-void ghost::setDirection(int d){
+void Ghost::setDirection(int d){
     direction = d;
 }
 

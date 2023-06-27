@@ -6,10 +6,10 @@
 #include <QGraphicsItem>
 #include <QTimer>
 
-class smallpoint : public QGraphicsPixmapItem
+class SmallPoint : public QGraphicsPixmapItem
 {
 public:
-    smallpoint(double X, double Y, int i, int j);
+    SmallPoint(double X, double Y, int i, int j);
     void collide();
 
 private:
