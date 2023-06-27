@@ -61,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     srand(time(NULL)); // seed
     timer1 = new QTimer(this); // move
+
     connect(timer1, SIGNAL(timeout()), this, SLOT(allMove()));
     timer1->start(18);
     

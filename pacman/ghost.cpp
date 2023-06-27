@@ -31,20 +31,8 @@ int ghost::changeDirection(){
     }
         
     if(x() == 376.0 && y() == 272.0){
-        tempDirect = random() % 2 + 2;
+        tempDirect = rand() % 2 + 2;
         return tempDirect;
-    }
-    if(x() == 322.0 && y() == 330.0){
-        return 1;
-    }
-    if(x() == 322.0 && y() == 354.0){
-        return 0;
-    }
-    if(x() == 430.0 && y() == 330.0){
-        return 1;
-    }
-    if(x() == 430.0 && y() == 354.0){
-        return 0;
     }
     if(x() == 322.0 && y() == 342.0){
         return 3;
@@ -56,7 +44,7 @@ int ghost::changeDirection(){
         return 0;
     }
     if(checkX && checkY){
-        tempDirect = random() % 4;
+        tempDirect = rand() % 4;
         if(mapDirection[i][j][tempDirect] && intersection[i][j]){
             return tempDirect;
         }

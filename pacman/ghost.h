@@ -17,8 +17,6 @@ public:
     void changePics2();
     void changePics3();
     void setDirection(int d);
-    void setCyanStart();
-    void setOrangeStart();
 
 protected:
     bool mapDirection[10][10][4] = {{{0,1,0,1}, {1,1,0,1}, {1,0,0,1}, {0,0,0,0}, {0,0,1,1}, {0,0,0,0}, {0,1,0,1}, {1,0,0,1}, {0,1,0,1}, {1,0,0,1}},
