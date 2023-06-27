@@ -60,15 +60,15 @@ MainWindow::MainWindow(QWidget *parent) :
     scene->addItem(Cherry);
 
     srand(time(NULL)); // seed
-    timer1 = new QTimer(this);
+    timer1 = new QTimer(this); // move
     connect(timer1, SIGNAL(timeout()), this, SLOT(allMove()));
     timer1->start(18);
     
-    timer2 = new QTimer(this);
+    timer2 = new QTimer(this); // change pics
     connect(timer2, SIGNAL(timeout()), this, SLOT(allChangePics()));
     timer2->start(100);
     
-    timer3 = new QTimer(this);
+    timer3 = new QTimer(this); // big point flick
     connect(timer3, SIGNAL(timeout()), this, SLOT(bigpointChangePics()));
     timer3->start(200);
     
@@ -77,16 +77,16 @@ MainWindow::MainWindow(QWidget *parent) :
     pause = false;
     isBonus2 = false;
     
-    timer8 = new QTimer(this);
+    timer8 = new QTimer(this); // pause after eating ghosts
     timer8->setSingleShot(true);
     connect(timer8, SIGNAL(timeout()), this, SLOT(pauseTime()));
     timer8->start(2000);
     
-    timer9 = new QTimer(this); // slow move in bonus time
+    timer9 = new QTimer(this); // move in home
     connect(timer9, SIGNAL(timeout()), this, SLOT(slowMove()));
     timer9->start(32);
     
-    timer10 = new QTimer(this);
+    timer10 = new QTimer(this); // cherry
     timer10->setSingleShot(true);
     connect(timer10, SIGNAL(timeout()), this, SLOT(cherrySetVisibleTrue()));
     timer10->start(60000);

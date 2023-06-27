@@ -61,13 +61,13 @@ private:
 
     QTimer *timer1; //for move
     QTimer *timer2; //for changePics
-    QTimer *timer3; //for bigpoint
+    QTimer *timer3; //for bigpoint flick
     QTimer *timer4[4]; //for bonus time 1
     QTimer *timer5[4]; //for bonus time 2
     QTimer *timer6[4]; //for flicker
     QTimer *timer7[4]; //for move in bonus time
-    QTimer *timer8; //for point, pause time
-    QTimer *timer9; //for slow move
+    QTimer *timer8; // pause after eating ghosts
+    QTimer *timer9; //for slow move in home
     QTimer *timer10; //for cherry setVisible
     int smallpointNum;
     int bigpointNum;
