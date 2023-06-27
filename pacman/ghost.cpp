@@ -13,86 +13,23 @@ void ghost::move(){
 int ghost::changeDirection(){
     int i = 0, j = 0, tempDirect;
     bool checkX = false, checkY = false;
-    if(x() == 10.0){
-        i = 0;
-        checkX = true;
+    float blocksX[] = {10.0, 74.0, 170.0, 252.0, 334.0, 418.0, 500.0, 584.0, 678.0, 740.0}
+    float blocksY[] = {8.0, 110.0, 194.0, 272.0, 342.0, 416.0, 492.0, 576.0, 660.0, 742.0}
+    
+    for (int k = 0; k < 10; k++){
+        if (x() == blocksX[k]){
+            i = k;
+            checkX = true;
+        }
     }
-    if(x() == 74.0){
-        i = 1;
-        checkX = true;
+
+    for (int k = 0; k < 10; k++){
+        if (y() == blocksY[k]){
+            j = k;
+            checkY = true;
+        }
     }
-    if(x() == 170.0){
-        i = 2;
-        checkX = true;
-    }
-    if(x() == 252.0){
-        i = 3;
-        checkX = true;
-    }
-    if(x() == 334.0){
-        i = 4;
-        checkX = true;
-    }
-    if(x() == 418.0){
-        i = 5;
-        checkX = true;
-    }
-    if(x() == 500.0){
-        i = 6;
-        checkX = true;
-    }
-    if(x() == 584.0){
-        i = 7;
-        checkX = true;
-    }
-    if(x() == 678.0){
-        i = 8;
-        checkX = true;
-    }
-    if(x() == 740.0){
-        i = 9;
-        checkX = true;
-    }
-    if(y() == 8.0){
-        j = 0;
-        checkY = true;
-    }
-    if(y() == 110.0){
-        j = 1;
-        checkY = true;
-    }
-    if(y() == 194.0){
-        j = 2;
-        checkY = true;
-    }
-    if(y() == 272.0){
-        j = 3;
-        checkY = true;
-    }
-    if(y() == 342.0){
-        j = 4;
-        checkY = true;
-    }
-    if(y() == 416.0){
-        j = 5;
-        checkY = true;
-    }
-    if(y() == 492.0){
-        j = 6;
-        checkY = true;
-    }
-    if(y() == 576.0){
-        j = 7;
-        checkY = true;
-    }
-    if(y() == 660.0){
-        j = 8;
-        checkY = true;
-    }
-    if(y() == 742.0){
-        j = 9;
-        checkY = true;
-    }
+        
     if(x() == 376.0 && y() == 272.0){
         tempDirect = random() % 2 + 2;
         return tempDirect;

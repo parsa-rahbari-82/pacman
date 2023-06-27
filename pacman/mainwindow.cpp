@@ -59,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     Cherry = new cherry();
     scene->addItem(Cherry);
 
-    srandom(time(NULL)); // seed
+    srand(time(NULL)); // seed
     timer1 = new QTimer(this);
     connect(timer1, SIGNAL(timeout()), this, SLOT(allMove()));
     timer1->start(18);
@@ -82,7 +82,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer8, SIGNAL(timeout()), this, SLOT(pauseTime()));
     timer8->start(2000);
     
-    timer9 = new QTimer(this); /* ####################### */
+    timer9 = new QTimer(this); // slow move in bonus time
     connect(timer9, SIGNAL(timeout()), this, SLOT(slowMove()));
     timer9->start(32);
     
@@ -119,7 +119,7 @@ void MainWindow::allMove(){
         for(int i = 0; i < 4; i++){
             bool isCollided = Pacman->collidesWithItem(Bigpoint[i]);
             if(isCollided){
-                if(!q.empty()){ /* ######################## */
+                if(!q.empty()){ // for eating another bigpoint in bonus time
                     int temp = q.front();
                     q.pop_front();
                     delete timer4[temp];
@@ -133,19 +133,19 @@ void MainWindow::allMove(){
                 Bigpoint[i]->collide();
                 ui->lcdNumber->display(ui->lcdNumber->value() + 50);
 
-                for (int i = 0; i < 4; i++) modes[i] = 1;
+                for (int i = 0; i < 4; i++) modes[i] = 1; // enable bonus time
 
-                timer4[i] = new QTimer(this);
+                timer4[i] = new QTimer(this); // bonus time
                 timer4[i]->setSingleShot(true);
                 connect(timer4[i], SIGNAL(timeout()), this, SLOT(bonusTime()));
                 timer4[i]->start(9000);
 
-                timer5[i] = new QTimer(this);
+                timer5[i] = new QTimer(this); // bonus time ending
                 timer5[i]->setSingleShot(true);
                 connect(timer5[i], SIGNAL(timeout()), this, SLOT(bonusTime2()));
                 timer5[i]->start(6500);
 
-                timer6[i] = new QTimer(this);
+                timer6[i] = new QTimer(this); // flick in bounus time 2
                 connect(timer6[i], SIGNAL(timeout()), this, SLOT(flicker()));
                 timer6[i]->start(200);
 
@@ -232,7 +232,7 @@ void MainWindow::bigpointChangePics(){
 void MainWindow::bonusTime(){
     int i = q.front(); /* ########## */
     q.pop_front();
-    for (int i = 0; i < 4; i++) modes[i] = 0;
+    for (int i = 0; i < 4; i++) modes[i] = 0; // disable bonus time
     isBonus2 = false;
     addpoint = 200;
     delete timer4[i];
