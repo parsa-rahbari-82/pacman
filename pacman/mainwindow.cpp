@@ -59,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     Cherry = new cherry();
     scene->addItem(Cherry);
 
-    srandom(time(NULL)); // seed
+    srand(time(NULL)); // seed
     timer1 = new QTimer(this);
     connect(timer1, SIGNAL(timeout()), this, SLOT(allMove()));
     timer1->start(18);
