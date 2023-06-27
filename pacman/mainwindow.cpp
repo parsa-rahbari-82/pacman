@@ -98,8 +98,10 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::allMove(){
     if(!pause){
         Pacman->move();
-        for (int i = 0; i < 4; i++)
-            (ghosts[i])->move();
+        for (int i = 0; i < 4; i++){
+            if (modes[i] == 0 && !slows[i])
+                (ghosts[i])->move();
+        }
             
         // collide small points
         for(int i = 0; i < 29; i++){
