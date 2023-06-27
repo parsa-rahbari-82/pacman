@@ -81,7 +81,7 @@ private:
     bool pause;
     bool isBonus2;
 
-    bool slows[4];
+    bool slows[4]; // speed after eating big point
 };
 
 #endif // MAINWINDOW_H

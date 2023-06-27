@@ -78,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
     pause = false;
     isBonus2 = false;
     
-    timer8 = new QTimer(this); // pause after eating ghosts
+    timer8 = new QTimer(this); // pase at the beginning
     timer8->setSingleShot(true);
     connect(timer8, SIGNAL(timeout()), this, SLOT(pauseTime()));
     timer8->start(2000);
@@ -150,7 +150,7 @@ void MainWindow::allMove(){
                 connect(timer6[i], SIGNAL(timeout()), this, SLOT(flicker()));
                 timer6[i]->start(200);
 
-                timer7[i] = new QTimer(this);
+                timer7[i] = new QTimer(this); // move in bounus time
                 connect(timer7[i], SIGNAL(timeout()), this, SLOT(ghostmove2()));
                 timer7[i]->start(32);
 
@@ -170,17 +170,17 @@ void MainWindow::allMove(){
             ui->Lose->setVisible(true);
         }
         
-
+        // point in bonus time
         for (int i = 0; i < 4; i++) {
             if(isCollided[i] && modes[i]){
                 modes[i] = 0; // exit bonus
 
-                point->setText(QString::number(addpoint));
+                point->setText(QString::number(addpoint)); // show red point
                 point->setGeometry((ghosts[i])->x(), (ghosts[i])->y() + 30, 49, 17);
                 point->setVisible(true);
                 ui->lcdNumber->display(ui->lcdNumber->value() + addpoint);
                 pause = true;
-                // pause for 1 sec
+                // pause for 1 sec after eating ghosts
                 timer8 = new QTimer(this);
                 timer8->setSingleShot(true);
                 connect(timer8, SIGNAL(timeout()), this, SLOT(getPointTime()));
@@ -208,7 +208,8 @@ void MainWindow::allMove(){
 void MainWindow::allChangePics(){
     if(!pause){
         pacman->changePics();
-
+        
+        // change ghosts pics by mode
         for (int i = 0; i < 4; i++){
             if(modes[i] == 0){
                 (ghosts[i])->changePics();
@@ -231,7 +232,7 @@ void MainWindow::bigpointChangePics(){
 }
 
 void MainWindow::bonusTime(){
-    int i = q.front(); /* ########## */
+    int i = q.front(); 
     q.pop_front();
     for (int i = 0; i < 4; i++) modes[i] = 0; // disable bonus time
     isBonus2 = false;
@@ -261,7 +262,7 @@ void MainWindow::flicker(){
     }
 }
 
-void MainWindow::ghostmove2(){
+void MainWindow::ghostmove2(){ // moving in bonus time
     if(!pause){
         for (int i = 0; i < 4; i++){
             if((modes[i] == 1 || modes[i] == 2) && !slows[i])
@@ -282,7 +283,7 @@ void MainWindow::pauseTime(){
     pause = false;
 }
 
-void MainWindow::slowMove(){
+void MainWindow::slowMove(){ // move in home
     if(!pause){
         for (int i = 0; i < 4; i++){
             if(slows[i])
