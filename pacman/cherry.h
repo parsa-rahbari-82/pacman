@@ -7,10 +7,10 @@
 #include <QTimer>
 #include <cstdlib>
 
-class cherry : public QGraphicsPixmapItem
+class Cherry : public QGraphicsPixmapItem
 {
 public:
-    cherry();
+    Cherry();
     void changePics(int i);
 
 private:

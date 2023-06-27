@@ -51,13 +51,13 @@ private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     
-    smallpoint *Smallpoint[29][26];
-    bigpoint *Bigpoint[4];
+    SmallPoint *smallpoint[29][26];
+    BigPoint *bigpoint[4];
   
-    pacman *Pacman;
-    ghost *ghosts[4];
+    Pacman *pacman;
+    Ghost *ghosts[4];
     
-    cherry *Cherry;
+    Cherry *cherry;
 
     QTimer *timer1; //for move
     QTimer *timer2; //for changePics

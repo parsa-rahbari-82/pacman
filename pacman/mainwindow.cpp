@@ -16,8 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // add small points to scene
     for(int i = 0; i < 29; i++){
         for(int j = 0; j < 26; j++){
-            Smallpoint[i][j] = new smallpoint(18 + j * 28.5, 8 + i * 26.1, i, j);
-            scene->addItem(Smallpoint[i][j]);
+            smallpoint[i][j] = new SmallPoint(18 + j * 28.5, 8 + i * 26.1, i, j);
+            scene->addItem(smallpoint[i][j]);
         }
     }
     smallpointNum = 0;
@@ -25,25 +25,25 @@ MainWindow::MainWindow(QWidget *parent) :
     // add big points to scene
     float poses[4][2] = {{18, 60.2}, {730.5, 60.2}, {18, 582.2}, {730.5, 582.2}};
     for (int i = 0; i < 4; i++) {
-        Bigpoint[i] = new bigpoint();
-        Bigpoint[i]->setPos(poses[i][0], poses[i][1]);
+        bigpoint[i] = new BigPoint();
+        bigpoint[i]->setPos(poses[i][0], poses[i][1]);
         
-        scene->addItem(Bigpoint[i]);
+        scene->addItem(bigpoint[i]);
     }
     bigpointNum = 0;
 
     // add pacman to scene
-    Pacman = new pacman();
-    Pacman->setPos(376, 576);
-    Pacman->setFlag(QGraphicsItem::ItemIsFocusable);
-    Pacman->setFocus();
-    scene->addItem(Pacman);
+    pacman = new Pacman();
+    pacman->setPos(376, 576);
+    pacman->setFlag(QGraphicsItem::ItemIsFocusable);
+    pacman->setFocus();
+    scene->addItem(pacman);
 
     // add ghosts to scene
-    ghosts[0] = new red();
-    ghosts[1] = new pink();
-    ghosts[2] = new cyan();
-    ghosts[3] = new orange();
+    ghosts[0] = new Red();
+    ghosts[1] = new Pink();
+    ghosts[2] = new Cyan();
+    ghosts[3] = new Orange();
     for (int i = 0; i < 4; i++) scene->addItem(ghosts[i]);
     
     // point lable
@@ -56,8 +56,8 @@ MainWindow::MainWindow(QWidget *parent) :
     point->setVisible(false);
 
     // cherry
-    Cherry = new cherry();
-    scene->addItem(Cherry);
+    cherry = new Cherry();
+    scene->addItem(cherry);
 
     srand(time(NULL)); // seed
     timer1 = new QTimer(this); // move
@@ -98,7 +98,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::allMove(){
     if(!pause){
-        Pacman->move();
+        pacman->move();
         for (int i = 0; i < 4; i++){
             if (modes[i] == 0 && !slows[i])
                 (ghosts[i])->move();
@@ -107,9 +107,9 @@ void MainWindow::allMove(){
         // collide small points
         for(int i = 0; i < 29; i++){
             for(int j = 0; j < 26; j++){
-                bool isCollided = Pacman->collidesWithItem(Smallpoint[i][j]);
+                bool isCollided = pacman->collidesWithItem(smallpoint[i][j]);
                 if(isCollided){
-                    Smallpoint[i][j]->collide();
+                    smallpoint[i][j]->collide();
                     ui->lcdNumber->display(ui->lcdNumber->value() + 10);
                     smallpointNum++;
                 }
@@ -118,7 +118,7 @@ void MainWindow::allMove(){
 
         // collide big points
         for(int i = 0; i < 4; i++){
-            bool isCollided = Pacman->collidesWithItem(Bigpoint[i]);
+            bool isCollided = pacman->collidesWithItem(bigpoint[i]);
             if(isCollided){
                 if(!q.empty()){ // for eating another bigpoint in bonus time
                     int temp = q.front();
@@ -131,7 +131,7 @@ void MainWindow::allMove(){
                     isBonus2 = false;
                 }
 
-                Bigpoint[i]->collide();
+                bigpoint[i]->collide();
                 ui->lcdNumber->display(ui->lcdNumber->value() + 50);
 
                 for (int i = 0; i < 4; i++) modes[i] = 1; // enable bonus time
@@ -162,7 +162,7 @@ void MainWindow::allMove(){
         // collided list
         bool isCollided[4];
         for (int i = 0; i < 4; i++)
-            isCollided[i] = Pacman->collidesWithItem(ghosts[i]);
+            isCollided[i] = pacman->collidesWithItem(ghosts[i]);
 
         if((isCollided[0] && !modes[0]) || (isCollided[1] && !modes[1])
         || (isCollided[2] && !modes[2]) || (isCollided[3] && !modes[3])){
@@ -193,9 +193,9 @@ void MainWindow::allMove(){
             }
         }
 
-        bool isCollidedCherry = Pacman->collidesWithItem(Cherry);
-        if(isCollidedCherry){
-            Cherry->changePics(1);
+        bool isCollidedcherry = pacman->collidesWithItem(cherry);
+        if(isCollidedcherry){
+            cherry->changePics(1);
             ui->lcdNumber->display(ui->lcdNumber->value() + 100);
         }
         if(smallpointNum == 242 && bigpointNum == 4){
@@ -207,7 +207,7 @@ void MainWindow::allMove(){
 
 void MainWindow::allChangePics(){
     if(!pause){
-        Pacman->changePics();
+        pacman->changePics();
 
         for (int i = 0; i < 4; i++){
             if(modes[i] == 0){
@@ -226,7 +226,7 @@ void MainWindow::allChangePics(){
 void MainWindow::bigpointChangePics(){
     if(!pause){
         for (int i = 0; i < 4; i++)
-            Bigpoint[i]->changePics();
+            bigpoint[i]->changePics();
     }
 }
 
@@ -298,14 +298,14 @@ void MainWindow::slowMove(){
 }
 
 void MainWindow::cherrySetVisibleTrue(){
-    Cherry->changePics(0);
+    cherry->changePics(0);
 
     connect(timer10, SIGNAL(timeout()), this, SLOT(cherrySetVisibleFalse()));
     timer10->start(10000);
 }
 
 void MainWindow::cherrySetVisibleFalse(){
-    Cherry->changePics(1);
+    cherry->changePics(1);
 
     connect(timer10, SIGNAL(timeout()), this, SLOT(cherrySetVisibleTrue()));
     timer10->start(60000);

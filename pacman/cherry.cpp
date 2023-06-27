@@ -1,7 +1,7 @@
 #include "cherry.h"
 #include "mainwindow.h"
 
-cherry::cherry()
+Cherry::Cherry()
 {
     // load pics
     pics.push_back(QPixmap(":/img/img/cherry"));
@@ -10,6 +10,6 @@ cherry::cherry()
     setPos(376, 416);
 }
 
-void cherry::changePics(int i){
+void Cherry::changePics(int i){
     setPixmap(pics[i].scaled(50, 50, Qt::KeepAspectRatio));
 }

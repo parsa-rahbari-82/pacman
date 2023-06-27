@@ -1,6 +1,6 @@
 #include "red.h"
 
-red::red(){
+Red::Red(){
     // load pics
     pics[0].push_back(QPixmap(":/img/img/redu1"));
     pics[0].push_back(QPixmap(":/img/img/redu2"));
@@ -20,7 +20,7 @@ red::red(){
     picsArg = 0;
 }
 
-void red::move(){
+void Red::move(){
     direction = changeDirection();
     if(direction == 0){
         setPos(x(), y() - 2);

@@ -7,10 +7,10 @@
 #include <QTimer>
 #include <ghost.h>
 
-class pink : public ghost
+class Pink : public Ghost
 {
 public:
-    pink();
+    Pink();
     virtual void move();
 
 };

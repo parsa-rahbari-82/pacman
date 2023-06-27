@@ -1,6 +1,6 @@
 #include "orange.h"
 
-orange::orange(){
+Orange::Orange(){
     // load pics
     pics[0].push_back(QPixmap(":/img/img/orangeu1"));
     pics[0].push_back(QPixmap(":/img/img/orangeu2"));
@@ -20,7 +20,7 @@ orange::orange(){
     picsArg = 0;
 }
 
-void orange::move(){
+void Orange::move(){
     direction = changeDirection();
     if(direction == 0){
         setPos(x(), y() - 2);

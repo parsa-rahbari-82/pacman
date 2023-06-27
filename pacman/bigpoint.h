@@ -6,10 +6,10 @@
 #include <QGraphicsItem>
 #include <QTimer>
 
-class bigpoint : public QGraphicsPixmapItem
+class BigPoint : public QGraphicsPixmapItem
 {
 public:
-    bigpoint();
+    BigPoint();
     void collide();
     void changePics();
 

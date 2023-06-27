@@ -1,6 +1,6 @@
 #include "cyan.h"
 
-cyan::cyan(){
+Cyan::Cyan(){
     // load pics
     pics[0].push_back(QPixmap(":/img/img/cyanu1"));
     pics[0].push_back(QPixmap(":/img/img/cyanu2"));
@@ -20,7 +20,7 @@ cyan::cyan(){
     picsArg = 0;
 }
 
-void cyan::move(){
+void Cyan::move(){
     direction = changeDirection();
     if(direction == 0){
         setPos(x(), y() - 2);
