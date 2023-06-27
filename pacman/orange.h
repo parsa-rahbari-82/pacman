@@ -11,7 +11,6 @@ class Orange : public Ghost
 {
 public:
     Orange();
-    virtual void move();
 
 };
 #endif // ORANGE_H

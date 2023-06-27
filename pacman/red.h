@@ -11,7 +11,6 @@ class Red : public Ghost
 {
 public:
     Red();
-    virtual void move();
 
 };
 #endif // RED_H

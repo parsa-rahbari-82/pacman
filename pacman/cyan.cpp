@@ -19,25 +19,3 @@ Cyan::Cyan(){
     direction = 0;
     picsArg = 0;
 }
-
-void Cyan::move(){
-    direction = changeDirection();
-    if(direction == 0){
-        setPos(x(), y() - 2);
-    }
-    if(direction == 1){
-        setPos(x(), y() + 2);
-    }
-    if(direction == 2){
-        setPos(x() - 2, y());
-    }
-    if(direction == 3){
-        setPos(x() + 2, y());
-    }
-    if(x() > 792){
-        setPos(-40, 342);
-    }
-    if(x() < -40){
-        setPos(792, 342);
-    }
-}

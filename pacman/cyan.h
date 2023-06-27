@@ -11,7 +11,6 @@ class Cyan : public Ghost
 {
 public:
     Cyan();
-    virtual void move();
 
 };
 #endif // CYAN_H

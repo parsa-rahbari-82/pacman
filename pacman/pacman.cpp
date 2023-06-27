@@ -81,7 +81,7 @@ void Pacman::changePics(){
 }
 
 bool Pacman::canChange(){
-    if(keyDirection == 4)   return true;
+    if(keyDirection == 4)   return true; // if pacman stop it can change direction
     int i = 0, j = 0;
     bool checkX = false, checkY = false;
     float blocksX[] = {10.0, 74.0, 170.0, 252.0, 334.0, 418.0, 500.0, 584.0, 678.0, 740.0};
