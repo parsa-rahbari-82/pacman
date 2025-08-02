@@ -1,0 +1,1 @@
+This project is an implementation of the classic Pacman game, featuring core game mechanics and an enhanced AI for ghost movement using a heuristic algorithm. The project was developed as an assignment for the AI course at AUT.
